@@ -1,1 +1,3 @@
-# notes-app-front
+NOTES-APP
+
+# React + TypeScript + Vite
