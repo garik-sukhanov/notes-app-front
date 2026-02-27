@@ -3,22 +3,22 @@ import type { NoteType } from '../types';
 import type { GetNotesResponseDto } from '../types/dto';
 
 class NoteService {
-  private _SPACES = '/spaces';
+  private _NOTES = '/notes';
 
   getAll() {
-    return instance.get<GetNotesResponseDto>(this._SPACES);
+    return instance.get<GetNotesResponseDto>(this._NOTES);
   }
 
   create(data: Omit<NoteType, 'id'>) {
-    return instance.post(this._SPACES, data);
+    return instance.post(this._NOTES, data);
   }
 
   update(data: NoteType) {
-    return instance.patch(`${this._SPACES}/${data.id}`, data);
+    return instance.patch(`${this._NOTES}/${data.id}`, data);
   }
 
   delete(id: string) {
-    return instance.delete(`${this._SPACES}/${id}`);
+    return instance.delete(`${this._NOTES}/${id}`);
   }
 }
 
