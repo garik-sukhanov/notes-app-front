@@ -1,6 +1,6 @@
 services:
-  bas-front-app:
-    container_name: bas-front-dev
+  notes-front-app:
+    container_name: notes-front-dev
     build:
       context: ..
       dockerfile: docker/Dockerfile.dev
@@ -16,7 +16,15 @@ services:
       - NODE_ENV=development
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5173"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:5173",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3
