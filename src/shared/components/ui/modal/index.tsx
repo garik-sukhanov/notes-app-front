@@ -1,7 +1,10 @@
 import styled from 'styled-components';
+
+import { createPortal } from 'react-dom';
+
+import { Button } from '../button';
 import { Flex } from '../flex';
 import { Typography } from '../typography';
-import { Button } from '../button';
 
 interface ModalProps {
   open?: boolean;
@@ -44,7 +47,7 @@ const ModalHeader = styled(Flex)`
 const Modal = ({ open, onCancel, title, children, footer }: ModalProps) => {
   if (!open) return null;
 
-  return (
+  return createPortal(
     <Overlay onClick={onCancel}>
       <ModalContainer onClick={(e) => e.stopPropagation()}>
         <ModalHeader $justify="space-between" $align="center">
@@ -64,7 +67,8 @@ const Modal = ({ open, onCancel, title, children, footer }: ModalProps) => {
           </Flex>
         )}
       </ModalContainer>
-    </Overlay>
+    </Overlay>,
+    document.body,
   );
 };
 
