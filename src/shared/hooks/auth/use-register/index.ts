@@ -1,10 +1,15 @@
-import { useSession } from "@/shared/model/session";
-import { authService } from "@/shared/services";
-import type { RegisterDto } from "@/shared/types/dto";
-import { useMutation } from "@tanstack/react-query";
+import { App } from 'antd';
+import { AxiosError } from 'axios';
+
+import { useMutation } from '@tanstack/react-query';
+
+import { useSession } from '@/shared/model/session';
+import { authService } from '@/shared/services';
+import type { RegisterDto } from '@/shared/types/dto';
 
 export const useRegisterMutation = () => {
   const { login } = useSession();
+  const { notification } = App.useApp();
 
   return useMutation({
     mutationFn: (dto: RegisterDto) => authService.register(dto),
@@ -12,7 +17,16 @@ export const useRegisterMutation = () => {
       login(data.data.accessToken);
     },
     onError: (error) => {
-      console.log('ошибка регистрации', error);
+      if (error instanceof AxiosError) {
+        const isConflict = error.status === 409;
+        const message = isConflict
+          ? 'Пользователь с таким email уже существует'
+          : `Ошибка сервера`;
+        notification.error({
+          message,
+        });
+      }
+      console.log('ошибка авторизации', error);
     },
   });
 };
