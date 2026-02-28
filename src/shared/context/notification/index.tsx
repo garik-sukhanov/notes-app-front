@@ -28,18 +28,8 @@ const slideIn = keyframes`
   }
 `;
 
-const slideOut = keyframes`
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-`;
-
 const Container = styled.div`
+
   position: fixed;
   top: 20px;
   right: 20px;
@@ -100,7 +90,9 @@ export const NotificationProvider = ({ children }: { children: React.ReactNode }
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useNotification = () => {
+
   const context = useContext(NotificationContext);
   if (!context) {
     throw new Error('useNotification must be used within a NotificationProvider');

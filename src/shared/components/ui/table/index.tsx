@@ -44,8 +44,9 @@ interface Column<T> {
   title: string;
   key: string;
   dataIndex?: keyof T;
-  render?: (value: any, record: T) => React.ReactNode;
+  render?: (value: T[keyof T] | undefined, record: T) => React.ReactNode;
 }
+
 
 interface TableProps<T> {
   columns: Column<T>[];
@@ -54,7 +55,7 @@ interface TableProps<T> {
   rowKey: (record: T) => string | number;
 }
 
-const Table = <T extends Record<string, any>>({
+const Table = <T extends Record<string, unknown>>({
   columns,
   dataSource,
   loading,
@@ -106,8 +107,9 @@ const Table = <T extends Record<string, any>>({
                   {col.render
                     ? col.render(col.dataIndex ? record[col.dataIndex] : undefined, record)
                     : col.dataIndex
-                    ? record[col.dataIndex]
+                    ? (record[col.dataIndex] as React.ReactNode)
                     : null}
+
                 </Td>
               ))}
             </Tr>
