@@ -1,6 +1,12 @@
 import styled, { css } from 'styled-components';
 
-import { type ReactNode, createContext, useContext, useState } from 'react';
+import {
+  type ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { createPortal } from 'react-dom';
 
 import { CloseIcon, MenuIcon } from '@/shared/assets/icons';
@@ -121,6 +127,18 @@ const Menu = ({ children, isBurger: isBurgerProp, isMobile }: MenuProps) => {
 
   const toggleMenu = () => setIsOpen((prev) => !prev);
   const closeMenu = () => setIsOpen(false);
+
+  useEffect(() => {
+    if (isBurger && isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isBurger, isOpen]);
 
   if (isBurger) {
     return (
