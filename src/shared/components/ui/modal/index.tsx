@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 import { Button } from '../button';
@@ -45,6 +46,18 @@ const ModalHeader = styled(Flex)`
 `;
 
 const Modal = ({ open, onCancel, title, children, footer }: ModalProps) => {
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [open]);
+
   if (!open) return null;
 
   return createPortal(
