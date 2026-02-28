@@ -22,8 +22,8 @@ export const useSession = createGStore(() => {
   const login = (token: string) => {
     localStorage.setItem(TOKEN_KEY, token);
     setToken(token);
-    window.location.replace('/');
   };
+
 
   const logout = () => {
     localStorage.removeItem(TOKEN_KEY);

@@ -57,9 +57,9 @@ describe('useSession', () => {
 
         await waitFor(() => {
             expect(localStorage.getItem('token')).toBe('test-token');
-            expect(replaceMock).toHaveBeenCalledWith('/');
             expect(result.current.session).not.toBeNull();
         });
+
 
         // Logout
         act(() => {

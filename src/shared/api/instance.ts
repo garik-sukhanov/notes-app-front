@@ -9,7 +9,25 @@ export const instance = axios.create({
   timeout: 10000,
   headers: {
     'X-Custom-Header': 'foobar',
-    'Access-Control-Allow-Origin': '*',
-    Authorization: 'Bearer ' + localStorage.getItem('token'),
   },
 });
+
+instance.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token && config.headers) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+instance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
