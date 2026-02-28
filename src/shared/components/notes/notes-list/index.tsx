@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { Card, Empty } from 'antd';
+import { useMemo } from 'react';
 
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
@@ -18,9 +19,14 @@ interface NotesListProps {
 }
 
 export const NotesList = ({ notes, isLoading }: NotesListProps) => {
-  const notesList: NoteType[] =
-    notes ??
-    getSkeletonData<Omit<NoteType, 'id'>>(8, { title: '', description: '' });
+  const notesList: NoteType[] = useMemo(
+    () =>
+      notes ??
+      getSkeletonData<Omit<NoteType, 'id'>>(8, { title: '', description: '' }),
+    [notes],
+  );
+
+  console.log('notes :>> ', notes);
 
   if (notes?.length === 0 && !isLoading) {
     return <Empty description={'У вас пока нет заметок'} />;

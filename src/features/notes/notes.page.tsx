@@ -1,4 +1,5 @@
 import { Button, Pagination } from 'antd';
+import { useState } from 'react';
 
 import { CreateNoteModal, Page } from '@/shared/components';
 import { NotesList } from '@/shared/components/notes';
@@ -6,7 +7,9 @@ import { useGetAllNotesQuery } from '@/shared/hooks';
 import { Trigger } from '@/shared/ui';
 
 function NotesPage() {
-  const { data, isLoading } = useGetAllNotesQuery();
+  const [page, setPage] = useState(1);
+  const [size, setSize] = useState<number | undefined>(undefined);
+  const { data, isLoading } = useGetAllNotesQuery({ page, size });
 
   return (
     <Page
@@ -21,6 +24,14 @@ function NotesPage() {
           pageSize={data?.pagination.size}
           current={data?.pagination?.page}
           total={data?.pagination?.total}
+          onChange={(p, s) => {
+            setPage(p);
+            setSize(s);
+          }}
+          onShowSizeChange={(p, s) => {
+            setPage(p);
+            setSize(s);
+          }}
         />
       }
     >
