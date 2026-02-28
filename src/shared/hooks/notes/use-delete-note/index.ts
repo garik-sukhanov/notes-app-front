@@ -1,12 +1,11 @@
-import { App } from 'antd';
-
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { useNotification } from '@/shared/context';
 import { noteService } from '@/shared/services';
 import type { NoteType } from '@/shared/types';
 
 export const useDeleteNoteMutation = () => {
-  const { notification } = App.useApp();
+  const { error: notifyError } = useNotification();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: NoteType['id']) => {
@@ -16,9 +15,7 @@ export const useDeleteNoteMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
     },
     onError: (error) => {
-      notification.error({
-        message: `Ошибка удаления заметки`,
-      });
+      notifyError(`Ошибка удаления заметки`);
       console.error(error);
     },
   });

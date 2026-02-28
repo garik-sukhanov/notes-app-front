@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-
-import { Spin } from 'antd';
+import { Spin } from '@/shared/components/ui';
 
 export const RouteFallback = () => (
   <StyledRouteFallback>

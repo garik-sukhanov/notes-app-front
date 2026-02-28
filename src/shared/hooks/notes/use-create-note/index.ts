@@ -1,12 +1,11 @@
-import { App } from 'antd';
-
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { useNotification } from '@/shared/context';
 import { noteService } from '@/shared/services';
 import type { NoteType } from '@/shared/types';
 
 export const useCreateNoteMutation = () => {
-  const { notification } = App.useApp();
+  const { error: notifyError } = useNotification();
 
   const queryClient = useQueryClient();
   return useMutation({
@@ -17,9 +16,7 @@ export const useCreateNoteMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
     },
     onError: (error) => {
-      notification.error({
-        message: `Ошибка создания заметки`,
-      });
+      notifyError(`Ошибка создания заметки`);
       console.error(error);
     },
   });

@@ -1,14 +1,31 @@
-import { Result, Space, Typography } from 'antd';
-import { Component, type ErrorInfo, type ReactNode } from 'react';
-import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
-const { Text, Title } = Typography;
+import { Component, type ErrorInfo, type ReactNode } from 'react';
+
+import { Card, Flex, Link, Typography } from '@/shared/components/ui';
 
 interface ErrorBoundaryState {
   hasError: boolean;
   error: string | null;
   info: ErrorInfo | null;
 }
+
+const ErrorContainer = styled(Flex)`
+  min-height: 100dvh;
+  padding: ${({ theme }) => theme.spacing[10]};
+  background-color: ${({ theme }) => theme.colors.bgBase};
+`;
+
+const StackTrace = styled.pre`
+  background-color: ${({ theme }) => theme.colors.bgContainer};
+  padding: ${({ theme }) => theme.spacing[4]};
+  border-radius: ${({ theme }) => theme.spacing[2]};
+  overflow: auto;
+  max-width: 100%;
+  font-size: 12px;
+  color: ${({ theme }) => theme.colors.textBase};
+  border: 1px solid ${({ theme }) => theme.colors.primary};
+`;
 
 export class ErrorBoundary extends Component<
   { children: ReactNode },
@@ -33,21 +50,30 @@ export class ErrorBoundary extends Component<
 
     if (hasError) {
       return (
-        <Space direction="vertical" style={{ backgroundColor: '#fff' }}>
-          <Result
-            status="500"
-            title="500"
-            subTitle={<Title level={2}>Sorry, something went wrong.</Title>}
-            extra={<Link to="/">Back Home</Link>}
-          />
-          <Space
-            direction="vertical"
-            style={{ padding: 20, height: '100dvh', overflowY: 'auto' }}
-          >
-            <Title level={3}>{error ?? 'Unknown error'}</Title>
-            <Text>{info?.componentStack ?? 'Unknown component stack'}</Text>
-          </Space>
-        </Space>
+        <ErrorContainer $vertical $align="center" $justify="center" $gap={6}>
+          <Card style={{ maxWidth: '600px', width: '100%' }}>
+            <Flex $vertical $gap={4}>
+              <Typography $variant="h1" $align="center">
+                500
+              </Typography>
+              <Typography $variant="h2" $align="center">
+                Что-то пошло не так
+              </Typography>
+
+              <Typography $variant="body" $color="error">
+                {error ?? 'Неизвестная ошибка'}
+              </Typography>
+
+              {info?.componentStack && (
+                <StackTrace>{info.componentStack}</StackTrace>
+              )}
+
+              <Flex $justify="center" style={{ marginTop: '20px' }}>
+                <Link to="/">Вернуться на главную</Link>
+              </Flex>
+            </Flex>
+          </Card>
+        </ErrorContainer>
       );
     }
 
