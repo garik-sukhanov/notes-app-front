@@ -1,7 +1,14 @@
+import { ChangeThemeButton } from '@/shared/components';
 import { LoginForm, type LoginFormValues } from '@/shared/components/forms';
+import {
+  Card,
+  CardTitle,
+  Flex,
+  Link,
+  Typography,
+} from '@/shared/components/ui';
 import { useLoginMutation } from '@/shared/hooks';
 import { ROUTES } from '@/shared/model/routes';
-import { Card, CardTitle, Typography, Link } from '@/shared/components/ui';
 
 function LoginPage() {
   const { mutate } = useLoginMutation();
@@ -10,13 +17,14 @@ function LoginPage() {
 
   return (
     <Card>
-      <CardTitle>Вход в аккаунт</CardTitle>
+      <Flex $align="top" $justify="space-between">
+        <CardTitle>Вход в аккаунт</CardTitle>
+        <ChangeThemeButton />
+      </Flex>
+
       <LoginForm onFinish={onSubmit} id="login-form" />
       <Typography $variant="body">
-        Нет аккаунта?{' '}
-        <Link to={ROUTES.REGISTER}>
-          зарегистрироваться
-        </Link>
+        Нет аккаунта? <Link to={ROUTES.REGISTER}>зарегистрироваться</Link>
       </Typography>
     </Card>
   );

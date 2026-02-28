@@ -1,10 +1,17 @@
+import { ChangeThemeButton } from '@/shared/components';
 import {
   RegisterForm,
   type RegisterFormValues,
 } from '@/shared/components/forms';
+import {
+  Card,
+  CardTitle,
+  Flex,
+  Link,
+  Typography,
+} from '@/shared/components/ui';
 import { useRegisterMutation } from '@/shared/hooks';
 import { ROUTES } from '@/shared/model/routes';
-import { Card, CardTitle, Typography, Link } from '@/shared/components/ui';
 
 function RegisterPage() {
   const { mutate } = useRegisterMutation();
@@ -20,13 +27,13 @@ function RegisterPage() {
 
   return (
     <Card>
-      <CardTitle>Регистрация</CardTitle>
+      <Flex $align="top" $justify="space-between">
+        <CardTitle>Регистрация</CardTitle>
+        <ChangeThemeButton />
+      </Flex>
       <RegisterForm onFinish={onSubmit} id="register-form" />
       <Typography $variant="body">
-        Уже зарегистрированы?{' '}
-        <Link to={ROUTES.LOGIN}>
-          Войдите в аккаунт
-        </Link>
+        Уже зарегистрированы? <Link to={ROUTES.LOGIN}>Войдите в аккаунт</Link>
       </Typography>
     </Card>
   );
