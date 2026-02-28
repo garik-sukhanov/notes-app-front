@@ -1,11 +1,20 @@
 import styled from 'styled-components';
+
 import { useMemo } from 'react';
+
 import { UpdateNoteModal } from '@/shared/components';
+import {
+  Button,
+  Card,
+  CardTitle,
+  Flex,
+  Skeleton,
+  Typography,
+} from '@/shared/components/ui';
 import { useDeleteNoteMutation } from '@/shared/hooks/notes/use-delete-note';
 import type { NoteType } from '@/shared/types';
 import { Trigger } from '@/shared/ui';
 import { getSkeletonData } from '@/shared/utils/getSkeletonData';
-import { Card, CardTitle, Typography, Flex, Button } from '@/shared/components/ui';
 
 interface NotesListProps {
   notes?: NoteType[];
@@ -29,34 +38,50 @@ export const NotesList = ({ notes, isLoading }: NotesListProps) => {
   );
 
   if (notes?.length === 0 && !isLoading) {
-    return <EmptyDescription $variant="body">У вас пока нет заметок</EmptyDescription>;
+    return (
+      <EmptyDescription $variant="body">
+        У вас пока нет заметок
+      </EmptyDescription>
+    );
   }
 
   return (
     <NotesGrid>
       {notesList.map(({ title, description, id }) => (
         <NoteCard key={id}>
-          <CardTitle>{title || 'Загрузка...'}</CardTitle>
-          <Typography $variant="body">{description}</Typography>
-          {!isLoading && (
-            <Flex $gap={2} $justify="flex-end" style={{ marginTop: 'auto' }}>
-              <Trigger
-                modal={
-                  <UpdateNoteModal
-                    noteValues={{ id, title, description }}
-                  />
-                }
-              >
-                <Button $variant="secondary" $size="small">Изменить</Button>
-              </Trigger>
-              <Button 
-                $variant="secondary" 
-                $size="small" 
-                onClick={() => deleteNote(id)}
-              >
-                Удалить
-              </Button>
+          {isLoading ? (
+            <Flex $vertical $gap={4}>
+              <Skeleton $height="28px" $width="60%" />
+              <Skeleton $height="20px" $width="90%" />
+              <Skeleton $height="20px" $width="80%" />
+              <Flex $gap={2} $justify="flex-end" style={{ marginTop: 'auto' }}>
+                <Skeleton $height="32px" $width="80px" />
+                <Skeleton $height="32px" $width="80px" />
+              </Flex>
             </Flex>
+          ) : (
+            <>
+              <CardTitle>{title}</CardTitle>
+              <Typography $variant="body">{description}</Typography>
+              <Flex $gap={2} $justify="flex-end" style={{ marginTop: 'auto' }}>
+                <Trigger
+                  modal={
+                    <UpdateNoteModal noteValues={{ id, title, description }} />
+                  }
+                >
+                  <Button $variant="secondary" $size="small">
+                    Изменить
+                  </Button>
+                </Trigger>
+                <Button
+                  $variant="secondary"
+                  $size="small"
+                  onClick={() => deleteNote(id)}
+                >
+                  Удалить
+                </Button>
+              </Flex>
+            </>
           )}
         </NoteCard>
       ))}

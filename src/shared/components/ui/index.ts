@@ -12,3 +12,4 @@ export { Table } from './table';
 export { Switch } from './switch';
 export { Modal } from './modal';
 export { Spin } from './spin';
+export { Skeleton } from './skeleton';
