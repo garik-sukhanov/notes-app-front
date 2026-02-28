@@ -1,13 +1,12 @@
 import { useLocation } from 'react-router-dom';
 
 import { Menu } from '@/shared/components/ui';
-import { BREAKPOINTS } from '@/shared/constants';
-import { useMediaQuery } from '@/shared/hooks';
 import { ROUTES } from '@/shared/model/routes';
 
-export const BusinessMenu = () => {
+import { ChangeThemeButton, LogoutButton } from '../buttons';
+
+export const BusinessMenu = ({ isMobile }: { isMobile?: boolean }) => {
   const location = useLocation();
-  const isMobile = useMediaQuery(`(max-width: ${BREAKPOINTS.MOBILE - 1}px)`);
 
   return (
     <Menu isMobile={isMobile}>
@@ -17,6 +16,25 @@ export const BusinessMenu = () => {
       <Menu.Item to={ROUTES.USERS} $active={location.pathname === ROUTES.USERS}>
         Пользователи
       </Menu.Item>
+      {isMobile && (
+        <div
+          style={{
+            marginTop: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+            padding: '16px 0',
+            width: '100%',
+            borderTop: '1px solid gray',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span>Тема:</span>
+            <ChangeThemeButton />
+          </div>
+          <LogoutButton $variant="secondary" $fullWidth />
+        </div>
+      )}
     </Menu>
   );
 };
