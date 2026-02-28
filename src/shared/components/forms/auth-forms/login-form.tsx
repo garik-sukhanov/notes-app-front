@@ -44,9 +44,10 @@ export const LoginForm = ({ onFinish, id }: LoginFormProps) => {
         control={control}
         render={({ field }) => (
           <InputWrapper>
-            <Label>Email</Label>
+            <Label htmlFor="login-email">Email</Label>
             <Input 
               {...field} 
+              id="login-email"
               $error={!!errors.email} 
               $fullWidth 
               placeholder="m@example.com" 
@@ -60,9 +61,10 @@ export const LoginForm = ({ onFinish, id }: LoginFormProps) => {
         control={control}
         render={({ field }) => (
           <InputWrapper>
-            <Label>Пароль</Label>
+            <Label htmlFor="login-password">Пароль</Label>
             <Input 
               {...field} 
+              id="login-password"
               type="password" 
               $error={!!errors.password} 
               $fullWidth 

@@ -2,7 +2,7 @@ import { vi } from 'vitest';
 
 import { render, screen } from '@testing-library/react';
 
-import { renderWithRouter } from '@/shared/helpers';
+import { renderWithThemeAndRouter } from '@/shared/helpers';
 
 import { Component as NotesPage } from './notes.page';
 
@@ -63,7 +63,7 @@ vi.mock('@/shared/hooks/notes/use-delete-note', () => ({
 
 describe('NotesPage', () => {
   it('renders correctly with notes list', () => {
-    render(renderWithRouter(<NotesPage />));
+    render(renderWithThemeAndRouter(<NotesPage />));
 
     expect(screen.getByText('Список заметок')).toBeInTheDocument();
     expect(screen.getByText('Создать заметку')).toBeInTheDocument();

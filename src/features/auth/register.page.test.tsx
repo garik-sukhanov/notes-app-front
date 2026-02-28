@@ -2,6 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { useSession } from '@/shared/model/session';
+import { renderWithThemeAndRouter } from '@/shared/helpers';
 
 vi.mock('@/shared/model/session', () => ({
     useSession: vi.fn(),
@@ -29,7 +30,7 @@ describe('RegisterPage', () => {
     });
 
     it('renders register form correctly', () => {
-        render(<RegisterPage />);
+        render(renderWithThemeAndRouter(<RegisterPage />));
 
         expect(screen.getByText(/регистрация/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/^email$/i)).toBeInTheDocument();
@@ -41,14 +42,16 @@ describe('RegisterPage', () => {
     it('submits form and logs in on success', async () => {
         const user = userEvent.setup();
 
-        render(<RegisterPage />);
+        render(renderWithThemeAndRouter(<RegisterPage />));
 
         const emailInput = screen.getByLabelText(/^email$/i);
+        const usernameInput = screen.getByLabelText(/^username$/i);
         const passwordInput = screen.getByLabelText(/^пароль$/i);
         const confirmInput = screen.getByLabelText(/подтвердите пароль/i);
         const submitBtn = screen.getByRole('button', { name: /зарегистрироваться/i });
 
         await user.type(emailInput, 'newuser@example.com');
+        await user.type(usernameInput, 'newuser');
         await user.type(passwordInput, 'secret123');
         await user.type(confirmInput, 'secret123');
         await user.click(submitBtn);
@@ -56,6 +59,7 @@ describe('RegisterPage', () => {
         await waitFor(() => {
             expect(mockMutate).toHaveBeenCalledWith({
                 email: 'newuser@example.com',
+                username: 'newuser',
                 password: 'secret123',
             });
         });
@@ -63,25 +67,22 @@ describe('RegisterPage', () => {
 
     it('validates passwords match', async () => {
         const user = userEvent.setup();
-        render(<RegisterPage />);
+        render(renderWithThemeAndRouter(<RegisterPage />));
 
         const emailInput = screen.getByLabelText(/^email$/i);
         const passwordInput = screen.getByLabelText(/^пароль$/i);
         const confirmInput = screen.getByLabelText(/подтвердите пароль/i);
         const submitBtn = screen.getByRole('button', { name: /зарегистрироваться/i });
 
-        // Fill in the form with mismatched passwords
         await user.type(emailInput, 'test@example.com');
         await user.type(passwordInput, 'password123');
         await user.type(confirmInput, 'differentPassword');
         await user.click(submitBtn);
 
-        // Check that the error message appears
         await waitFor(() => {
             expect(screen.getByText(/пароли не совпадают!/i)).toBeInTheDocument();
         });
 
-        // Verify that the mutation was not called
         expect(mockMutate).not.toHaveBeenCalled();
     });
 });

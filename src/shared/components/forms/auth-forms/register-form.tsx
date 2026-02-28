@@ -56,9 +56,10 @@ export const RegisterForm = ({ onFinish, id }: RegisterFormProps) => {
         control={control}
         render={({ field }) => (
           <InputWrapper>
-            <Label>Email</Label>
+            <Label htmlFor="reg-email">Email</Label>
             <Input 
               {...field} 
+              id="reg-email"
               type="email"
               $error={!!errors.email} 
               $fullWidth 
@@ -73,9 +74,10 @@ export const RegisterForm = ({ onFinish, id }: RegisterFormProps) => {
         control={control}
         render={({ field }) => (
           <InputWrapper>
-            <Label>Username</Label>
+            <Label htmlFor="reg-username">Username</Label>
             <Input 
               {...field} 
+              id="reg-username"
               type="text"
               $error={!!errors.username} 
               $fullWidth 
@@ -90,9 +92,10 @@ export const RegisterForm = ({ onFinish, id }: RegisterFormProps) => {
         control={control}
         render={({ field }) => (
           <InputWrapper>
-            <Label>Пароль</Label>
+            <Label htmlFor="reg-password">Пароль</Label>
             <Input 
               {...field} 
+              id="reg-password"
               type="password"
               $error={!!errors.password} 
               $fullWidth 
@@ -106,9 +109,10 @@ export const RegisterForm = ({ onFinish, id }: RegisterFormProps) => {
         control={control}
         render={({ field }) => (
           <InputWrapper>
-            <Label>Подтвердите пароль</Label>
+            <Label htmlFor="reg-confirmPassword">Подтвердите пароль</Label>
             <Input 
               {...field} 
+              id="reg-confirmPassword"
               type="password"
               $error={!!errors.confirmPassword} 
               $fullWidth 

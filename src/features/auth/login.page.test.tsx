@@ -4,6 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { useLoginMutation } from '@/shared/hooks';
+import { renderWithThemeAndRouter } from '@/shared/helpers';
 import { useSession } from '@/shared/model/session';
 
 import { Component as LoginPage } from './login.page';
@@ -36,7 +37,7 @@ describe('LoginPage', () => {
       mutate: vi.fn(),
     });
 
-    render(<LoginPage />);
+    render(renderWithThemeAndRouter(<LoginPage />));
 
     expect(screen.getByText(/вход в аккаунт/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
@@ -51,7 +52,7 @@ describe('LoginPage', () => {
       mutate: vi.fn(),
     });
     const user = userEvent.setup();
-    render(<LoginPage />);
+    render(renderWithThemeAndRouter(<LoginPage />));
 
     const submitBtn = screen.getByRole('button', { name: /^войти$/i });
     await user.click(submitBtn);
@@ -60,7 +61,7 @@ describe('LoginPage', () => {
     await user.type(emailInput, 'invalid-email');
     await user.click(submitBtn);
 
-    expect(await screen.findByText('Некорректный email')).toBeInTheDocument();
+    expect(await screen.findByText('Некорректный email')).toBeInTheDocument();
   });
 
   it('submits form', async () => {
@@ -71,7 +72,7 @@ describe('LoginPage', () => {
       mutate: mutateMock,
     });
 
-    render(<LoginPage />);
+    render(renderWithThemeAndRouter(<LoginPage />));
 
     const emailInput = screen.getByLabelText(/email/i);
     const passwordInput = screen.getByLabelText(/пароль/i);

@@ -2,6 +2,7 @@ import { vi } from 'vitest';
 
 import { render, screen } from '@testing-library/react';
 
+import { renderWithTheme } from '@/shared/helpers';
 import { Component as UsersPage } from './users.page';
 
 vi.mock('@/shared/hooks', () => ({
@@ -32,7 +33,7 @@ vi.mock('@/shared/hooks', () => ({
 
 describe('UsersPage', () => {
   it('renders correctly', () => {
-    render(<UsersPage />);
+    render(renderWithTheme(<UsersPage />));
     expect(screen.getByText('Список пользователей')).toBeInTheDocument();
     expect(screen.getByText('user1')).toBeInTheDocument();
     expect(screen.getByText('loser'.toUpperCase())).toBeInTheDocument();
