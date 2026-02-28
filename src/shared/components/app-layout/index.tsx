@@ -25,9 +25,14 @@ export const AppLayout = ({ children }: { children: ReactNode }) => {
 const OutsideLayout = styled(Layout)`
   min-height: 100dvh;
   position: relative;
+  display: flex;
+  flex-direction: column;
 `;
 
 const StyledContent = styled(Content)`
-  height: 100%;
   padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
 `;

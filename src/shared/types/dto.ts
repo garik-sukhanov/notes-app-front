@@ -19,6 +19,7 @@ export type LoginDto = {
 
 export type RegisterDto = {
   email: string;
+  username: string;
   password: string;
 };
 

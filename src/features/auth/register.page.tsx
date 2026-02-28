@@ -1,17 +1,19 @@
 import { Card, Form, type FormProps, Typography } from 'antd';
 
+import { useRegisterMutation } from '@/shared/hooks';
 import { ROUTES } from '@/shared/model/routes';
 import { Button, Input } from '@/shared/ui/kit';
-import { useRegisterMutation } from '@/shared/hooks';
 
 const defaultValues = {
   email: '',
+  username: '',
   password: '',
   confirmPassword: '',
 };
 
 interface RegisterFormType {
   email: string;
+  username: string;
   password: string;
   confirmPassword: string;
 }
@@ -23,6 +25,7 @@ function RegisterPage() {
     const dto = {
       email: data.email,
       password: data.password,
+      username: data.username,
     };
     mutate(dto);
   };
@@ -50,6 +53,9 @@ function RegisterPage() {
             placeholder="m@example.com"
             required
           />
+        </Form.Item>
+        <Form.Item label="Username" name="username">
+          <Input size="large" type="text" placeholder="John Dow" required />
         </Form.Item>
         <Form.Item label="Пароль" name="password">
           <Input size="large" type="password" required />

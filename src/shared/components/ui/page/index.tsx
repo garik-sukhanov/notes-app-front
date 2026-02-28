@@ -39,7 +39,7 @@ const TopLine = styled.div`
 `;
 
 const PageWrapper = styled.div`
-  min-height: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
