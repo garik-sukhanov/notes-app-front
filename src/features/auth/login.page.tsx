@@ -73,29 +73,33 @@ function LoginPage() {
         <Card
           size="small"
           extra={
-            <Button type="link" href="#">
-              Забыли пароль?
-            </Button>
+            <Flex vertical align="flex-start">
+              <Typography>
+                Нет аккаунта?
+                <Button type="link" href={ROUTES.REGISTER}>
+                  зарегистрироваться
+                </Button>
+              </Typography>
+              <Typography>
+                Забыли пароль?
+                <Button type="link" href={ROUTES.REGISTER}>
+                  восстановить
+                </Button>
+              </Typography>
+            </Flex>
           }
         >
-          <Flex vertical gap="small" style={{ width: '100%' }}>
-            <Button
-              htmlType="submit"
-              variant="filled"
-              form="login-form"
-              type="primary"
-              size="large"
-            >
-              Войти
-            </Button>
-          </Flex>
-        </Card>
-        <Typography>
-          Если нет аккаунта, вы можете
-          <Button type="link" href={ROUTES.REGISTER}>
-            зарегистрироваться
+          <Button
+            htmlType="submit"
+            variant="filled"
+            form="login-form"
+            type="primary"
+            size="large"
+            block
+          >
+            Войти
           </Button>
-        </Typography>
+        </Card>
       </Form>
     </Card>
   );

@@ -1,8 +1,27 @@
-import { Card, Form, type FormProps, Typography } from 'antd';
+import { z } from 'zod';
+
+import { Card, Form, Typography } from 'antd';
+import { Controller, useForm } from 'react-hook-form';
+
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useRegisterMutation } from '@/shared/hooks';
 import { ROUTES } from '@/shared/model/routes';
 import { Button, Input } from '@/shared/ui/kit';
+
+const registerSchema = z
+  .object({
+    email: z.email('Некорректный email'),
+    username: z.string().min(3, 'Минимум 3 символа'),
+    password: z.string().min(8, 'Не менее 8 символов'),
+    confirmPassword: z.string().min(1, 'Пожалуйста, подтвердите пароль!'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Пароли не совпадают!',
+    path: ['confirmPassword'],
+  });
+
+type RegisterFormType = z.infer<typeof registerSchema>;
 
 const defaultValues = {
   email: '',
@@ -11,17 +30,19 @@ const defaultValues = {
   confirmPassword: '',
 };
 
-interface RegisterFormType {
-  email: string;
-  username: string;
-  password: string;
-  confirmPassword: string;
-}
-
 function RegisterPage() {
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<RegisterFormType>({
+    resolver: zodResolver(registerSchema),
+    defaultValues,
+  });
+
   const { mutate } = useRegisterMutation();
 
-  const onFinish: FormProps<RegisterFormType>['onFinish'] = async (data) => {
+  const onSubmit = (data: RegisterFormType) => {
     const dto = {
       email: data.email,
       password: data.password,
@@ -30,74 +51,98 @@ function RegisterPage() {
     mutate(dto);
   };
 
-  const onFinishFailed: FormProps<RegisterFormType>['onFinishFailed'] = (
-    errorInfo,
-  ) => {
-    console.log('Failed:', errorInfo);
-  };
-
   return (
     <Card title="Регистрация">
       <Form
         id="register-form"
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
+        onFinish={handleSubmit(onSubmit)}
         layout="vertical"
         initialValues={defaultValues}
         autoComplete="off"
+        validateTrigger="onChange"
       >
-        <Form.Item label="Email" name="email">
-          <Input
-            size="large"
-            type="email"
-            placeholder="m@example.com"
-            required
-          />
-        </Form.Item>
-        <Form.Item label="Username" name="username">
-          <Input size="large" type="text" placeholder="John Dow" required />
-        </Form.Item>
-        <Form.Item label="Пароль" name="password">
-          <Input size="large" type="password" required />
-        </Form.Item>
-        <Form.Item
-          label="Подтвердите пароль"
+        <Controller
+          name="email"
+          control={control}
+          render={({ field }) => (
+            <Form.Item
+              label="Email"
+              validateStatus={errors.email ? 'error' : ''}
+              help={errors.email?.message}
+            >
+              <Input
+                {...field}
+                size="large"
+                type="email"
+                placeholder="m@example.com"
+              />
+            </Form.Item>
+          )}
+        />
+        <Controller
+          name="username"
+          control={control}
+          render={({ field }) => (
+            <Form.Item
+              label="Username"
+              validateStatus={errors.username ? 'error' : ''}
+              help={errors.username?.message}
+            >
+              <Input
+                {...field}
+                size="large"
+                type="text"
+                placeholder="John Dow"
+              />
+            </Form.Item>
+          )}
+        />
+        <Controller
+          name="password"
+          control={control}
+          render={({ field }) => (
+            <Form.Item
+              label="Пароль"
+              validateStatus={errors.password ? 'error' : ''}
+              help={errors.password?.message}
+            >
+              <Input {...field} size="large" type="password" />
+            </Form.Item>
+          )}
+        />
+        <Controller
           name="confirmPassword"
-          dependencies={['password']}
-          rules={[
-            { required: true, message: 'Пожалуйста, подтвердите пароль!' },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue('password') === value) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(new Error('Пароли не совпадают!'));
-              },
-            }),
-          ]}
+          control={control}
+          render={({ field }) => (
+            <Form.Item
+              label="Подтвердите пароль"
+              validateStatus={errors.confirmPassword ? 'error' : ''}
+              help={errors.confirmPassword?.message}
+            >
+              <Input {...field} size="large" type="password" />
+            </Form.Item>
+          )}
+        />
+        <Card
+          extra={
+            <Typography>
+              Уже зарегистрированы?{' '}
+              <Button type="link" href={ROUTES.LOGIN}>
+                Войдите в аккаунт
+              </Button>
+            </Typography>
+          }
         >
-          <Input size="large" type="password" required />
-        </Form.Item>
-        <Button
-          type="primary"
-          size="large"
-          form="register-form"
-          htmlType="submit"
-          className="w-full"
-        >
-          Зарегистрироваться
-        </Button>
-        <Typography>
-          Уже зарегистрированы?{' '}
           <Button
-            type="link"
-            href={ROUTES.LOGIN}
-            className="underline-offset-4 underline"
+            type="primary"
+            size="large"
+            form="register-form"
+            htmlType="submit"
+            block
           >
-            Войдите в аккаунт
+            Зарегистрироваться
           </Button>
-          .
-        </Typography>
+        </Card>
       </Form>
     </Card>
   );
