@@ -33,6 +33,7 @@ const TopLine = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
   margin-bottom: ${({ theme }) => theme.spacing[5]};
 `;
 

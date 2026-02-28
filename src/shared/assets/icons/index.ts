@@ -1,2 +1,4 @@
-export { TrashIcon } from './trash-icon';
-export { EditIcon } from './edit-icon';
+export * from './edit-icon';
+export * from './trash-icon';
+export * from './menu-icon';
+export * from './close-icon';
