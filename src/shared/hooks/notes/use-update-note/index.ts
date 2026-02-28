@@ -16,7 +16,7 @@ export const useUpdateNoteMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
     },
     onError: (error) => {
-      notifyError(`Ошибка создания заметки`);
+      notifyError(`Ошибка обновления заметки`);
       console.error(error);
     },
   });
