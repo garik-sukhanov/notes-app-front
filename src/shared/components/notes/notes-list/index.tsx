@@ -5,11 +5,11 @@ import { useMemo } from 'react';
 
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
-import type { NoteType } from '@/shared/types';
-import { getSkeletonData } from '@/shared/utils/getSkeletonData';
-import { Trigger } from '@/shared/ui';
 import { UpdateNoteModal } from '@/shared/components';
 import { useDeleteNoteMutation } from '@/shared/hooks/notes/use-delete-note';
+import type { NoteType } from '@/shared/types';
+import { Trigger } from '@/shared/ui';
+import { getSkeletonData } from '@/shared/utils/getSkeletonData';
 
 interface NotesListProps {
   notes?: NoteType[];
@@ -67,11 +67,24 @@ export const NotesList = ({ notes, isLoading }: NotesListProps) => {
 const NotesGrid = styled.div`
   display: grid;
   gap: 20px;
-  grid-template-columns: repeat(auto-fill, 300px);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   grid-auto-flow: dense;
+  grid-auto-rows: minmax(50px, auto);
+  width: 100%;
+  justify-items: stretch;
+  margin: 0 auto;
+  align-items: stretch;
 `;
 
 const NoteCard = styled(Card)`
-  width: 300px;
+  min-width: 300px;
+  width: 100%;
   height: fit-content;
+  .ant-card-body {
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
 `;

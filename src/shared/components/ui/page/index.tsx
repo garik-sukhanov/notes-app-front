@@ -39,10 +39,11 @@ const TopLine = styled.div`
 `;
 
 const PageWrapper = styled.div`
-  height: 100%;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  gap: 16px;
 `;
 
 const PageTitle = styled.h2`

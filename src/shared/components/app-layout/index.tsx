@@ -23,7 +23,7 @@ export const AppLayout = ({ children }: { children: ReactNode }) => {
 };
 
 const OutsideLayout = styled(Layout)`
-  height: 100dvh;
+  min-height: 100dvh;
   position: relative;
 `;
 
