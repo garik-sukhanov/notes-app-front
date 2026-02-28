@@ -1,8 +1,9 @@
+import type { ComponentProps } from 'react';
 import styled, { css } from 'styled-components';
 
 type TypographyVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'body' | 'small';
 
-interface TypographyProps {
+interface TypographyProps extends ComponentProps<'span'> {
   $variant?: TypographyVariant;
   $color?: string;
   $weight?: number | string;
@@ -50,7 +51,7 @@ const getVariantStyles = (variant: TypographyVariant = 'body') => {
   }
 };
 
-const Typography = styled.div<TypographyProps>`
+const Typography = styled.span<TypographyProps>`
   color: ${({ $color, theme }) => $color || theme.colors.textBase};
   font-weight: ${({ $weight }) => $weight || 'normal'};
   text-align: ${({ $align }) => $align || 'left'};

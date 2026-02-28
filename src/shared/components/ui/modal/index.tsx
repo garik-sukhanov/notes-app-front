@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
-import { useEffect } from 'react';
+import { useEffect, type ComponentProps } from 'react';
 import { createPortal } from 'react-dom';
 
 import { Button } from '../button';
 import { Flex } from '../flex';
 import { Typography } from '../typography';
 
-interface ModalProps {
+interface ModalProps extends ComponentProps<'div'> {
   open?: boolean;
   onCancel?: () => void;
   title?: string;

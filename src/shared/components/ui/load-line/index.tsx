@@ -1,6 +1,7 @@
+import type { ComponentProps } from 'react';
 import styled from 'styled-components';
 
-interface LoadLineProps {
+interface LoadLineProps extends ComponentProps<'div'> {
   isLoading: boolean;
 }
 

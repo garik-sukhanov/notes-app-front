@@ -20,9 +20,9 @@ const Pagination = ({
   if (totalPages <= 1) return null;
 
   return (
-    <Flex $gap={2} $align="center">
+    <Flex $gap={10} $align="center">
       <Button
-        $variant="secondary"
+        $variant="round"
         $size="small"
         disabled={current === 1}
         onClick={() => onChange(current - 1, pageSize)}
@@ -35,7 +35,7 @@ const Pagination = ({
       </Typography>
 
       <Button
-        $variant="secondary"
+        $variant="round"
         $size="small"
         disabled={current === totalPages}
         onClick={() => onChange(current + 1, pageSize)}

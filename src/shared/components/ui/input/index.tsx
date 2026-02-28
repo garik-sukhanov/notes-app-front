@@ -1,6 +1,7 @@
+import type { ComponentProps } from 'react';
 import styled from 'styled-components';
 
-interface StyledInputProps {
+interface StyledInputProps extends ComponentProps<'input'> {
   $error?: boolean;
   $fullWidth?: boolean;
 }

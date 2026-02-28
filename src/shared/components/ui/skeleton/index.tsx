@@ -1,3 +1,4 @@
+import type { ComponentProps } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 const skeletonKeyframes = keyframes`
@@ -9,7 +10,7 @@ const skeletonKeyframes = keyframes`
   }
 `;
 
-interface SkeletonProps {
+interface SkeletonProps extends ComponentProps<'div'> {
   $width?: string;
   $height?: string;
   $borderRadius?: string;

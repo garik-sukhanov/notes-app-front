@@ -1,9 +1,10 @@
+import type { ComponentProps } from 'react';
 import styled, { css } from 'styled-components';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost';
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'round';
 export type ButtonSize = 'small' | 'medium' | 'large';
 
-interface StyledButtonProps {
+interface StyledButtonProps extends ComponentProps<'button'> {
   $variant?: ButtonVariant;
   $size?: ButtonSize;
   $fullWidth?: boolean;
@@ -73,6 +74,19 @@ const Button = styled.button<StyledButtonProps>`
             background-color: ${theme.colors.bgContainer};
           }
         `;
+      case 'round':
+        return css`
+          background-color: transparent;
+          border-color: ${theme.colors.primary};
+          color: ${theme.colors.primary};
+          &:hover:not(:disabled) {
+            background-color: ${theme.colors.primary}10;
+          }
+          border-radius: 15px;
+          min-width: 30px;
+        `;
+      default:
+        return css``;
     }
   }}
 `;

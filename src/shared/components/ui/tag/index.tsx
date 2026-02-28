@@ -1,6 +1,7 @@
+import type { ComponentProps } from 'react';
 import styled from 'styled-components';
 
-interface TagProps {
+interface TagProps extends ComponentProps<'span'> {
   $color?: 'success' | 'warning' | 'error' | 'info';
 }
 

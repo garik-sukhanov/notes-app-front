@@ -1,3 +1,4 @@
+import type { ComponentProps } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 const rotate = keyframes`
@@ -9,7 +10,7 @@ const rotate = keyframes`
   }
 `;
 
-interface SpinProps {
+interface SpinProps extends ComponentProps<'div'> {
   size?: 'small' | 'medium' | 'large';
   color?: string;
 }

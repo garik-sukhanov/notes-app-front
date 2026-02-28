@@ -1,3 +1,5 @@
+import styled from 'styled-components';
+
 import { useLocation } from 'react-router-dom';
 
 import { Menu, Typography } from '@/shared/components/ui';
@@ -17,26 +19,33 @@ export const BusinessMenu = ({ isMobile }: { isMobile?: boolean }) => {
         Пользователи
       </Menu.Item>
       {isMobile && (
-        <div
-          style={{
-            marginTop: 'auto',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '16px',
-            padding: '16px 0',
-            width: '100%',
-            borderTop: '1px solid gray',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Footer>
+          <Row>
             <Typography>Тема:</Typography>
             <ChangeThemeButton />
-          </div>
+          </Row>
           <LogoutButton $variant="secondary" $fullWidth />
-        </div>
+        </Footer>
       )}
     </Menu>
   );
 };
+
+const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+`;
+
+const Footer = styled.div`
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 0;
+  width: 100%;
+  border-top: 1px solid gray;
+
+`;
 
 export { BusinessMenu as Menu };

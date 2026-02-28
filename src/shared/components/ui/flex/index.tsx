@@ -1,6 +1,7 @@
+import type { ComponentProps } from 'react';
 import styled from 'styled-components';
 
-interface FlexProps {
+interface FlexProps extends ComponentProps<'div'> {
   $vertical?: boolean;
   $gap?: number | string;
   $align?: string;
