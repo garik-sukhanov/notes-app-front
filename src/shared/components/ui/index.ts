@@ -1,6 +1,6 @@
 export { LoadLine } from './load-line';
 export { Page, type PageProps } from './page';
-export { Button, type ButtonVariant, type ButtonSize } from './button';
+export { Button, type ButtonVariant, type ButtonSize, type ButtonProps } from './button';
 export { Typography } from './typography';
 export { Input, InputWrapper, Label, ErrorText, TextArea } from './input';
 export { Card, CardTitle } from './card';

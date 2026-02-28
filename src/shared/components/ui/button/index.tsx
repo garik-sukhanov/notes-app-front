@@ -4,13 +4,13 @@ import styled, { css } from 'styled-components';
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'round';
 export type ButtonSize = 'small' | 'medium' | 'large';
 
-interface StyledButtonProps extends ComponentProps<'button'> {
+export interface ButtonProps extends ComponentProps<'button'> {
   $variant?: ButtonVariant;
   $size?: ButtonSize;
   $fullWidth?: boolean;
 }
 
-const Button = styled.button<StyledButtonProps>`
+const Button = styled.button<ButtonProps>`
   display: inline-flex;
   align-items: center;
   justify-content: center;

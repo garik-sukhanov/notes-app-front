@@ -1,1 +1,1 @@
-export { Button, type ButtonVariant as ButtonType } from '@/shared/components/ui';
+export { Button, type ButtonVariant as ButtonType, type ButtonProps } from '@/shared/components/ui';
