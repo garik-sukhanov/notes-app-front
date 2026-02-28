@@ -55,7 +55,9 @@ function RegisterPage() {
     <Card title="Регистрация">
       <Form
         id="register-form"
-        onFinish={handleSubmit(onSubmit)}
+        onFinish={() => {
+          void handleSubmit(onSubmit)();
+        }}
         layout="vertical"
         initialValues={defaultValues}
         autoComplete="off"

@@ -39,7 +39,9 @@ function LoginPage() {
     <Card title="Вход в аккаунт" className="w-full max-w-sm">
       <Form
         layout="vertical"
-        onFinish={handleSubmit(onSubmit)}
+        onFinish={() => {
+          void handleSubmit(onSubmit)();
+        }}
         id="login-form"
         initialValues={defaultValues}
         validateTrigger="onChange"
