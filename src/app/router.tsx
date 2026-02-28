@@ -40,11 +40,6 @@ export const router = createBrowserRouter([
             lazy: () => import('@/features/notes/notes.page'),
             HydrateFallback: RouteFallback,
           },
-          {
-            path: ROUTES.NOTE,
-            lazy: () => import('@/features/note/note.page'),
-            HydrateFallback: RouteFallback,
-          },
         ],
       },
 
