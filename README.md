@@ -82,7 +82,7 @@ yarn docker:prod:start
 yarn docker:prod:stop
 ```
 
-Откройте: [http://localhost](http://localhost)
+Откройте: [LOCALHOST](http://localhost:5173/)
 
 ---
 
