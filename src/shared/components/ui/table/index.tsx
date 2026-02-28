@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 
+import { Skeleton } from '../skeleton';
+
+
 const TableWrapper = styled.div`
   width: 100%;
   overflow-x: auto;
@@ -57,7 +60,33 @@ const Table = <T extends Record<string, any>>({
   loading,
   rowKey,
 }: TableProps<T>) => {
-  if (loading) return <div>Загрузка...</div>;
+  if (loading) {
+    return (
+      <TableWrapper>
+        <StyledTable>
+          <thead>
+            <tr>
+              {columns.map((col) => (
+                <Th key={col.key}>{col.title}</Th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {Array.from({ length: 5 }).map((_, rowIndex) => (
+              <Tr key={`skeleton-row-${rowIndex}`}>
+                {columns.map((col) => (
+                  <Td key={`skeleton-cell-${rowIndex}-${col.key}`}>
+                    <Skeleton $height="20px" $width="80%" />
+                  </Td>
+                ))}
+              </Tr>
+            ))}
+          </tbody>
+        </StyledTable>
+      </TableWrapper>
+    );
+  }
+
 
   return (
     <TableWrapper>

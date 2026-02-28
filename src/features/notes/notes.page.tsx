@@ -9,7 +9,8 @@ import { Trigger } from '@/shared/ui';
 function NotesPage() {
   const [page, setPage] = useState(1);
   const size = 10;
-  const { data, isLoading } = useGetAllNotesQuery({ page, size });
+  const { data, isLoading, isFetching } = useGetAllNotesQuery({ page, size });
+
 
   return (
     <Page
@@ -30,7 +31,8 @@ function NotesPage() {
         )
       }
     >
-      <NotesList notes={data?.data} isLoading={isLoading} />
+      <NotesList notes={data?.data} isLoading={isLoading || isFetching} />
+
     </Page>
   );
 }
