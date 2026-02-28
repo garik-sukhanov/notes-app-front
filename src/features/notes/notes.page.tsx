@@ -1,52 +1,30 @@
-import { Avatar, Button, Card, Spin } from 'antd';
-
-import {
-  EditOutlined,
-  EllipsisOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
+import { Button, Pagination } from 'antd';
 
 import { CreateNoteModal, Page } from '@/shared/components';
+import { NotesList } from '@/shared/components/notes';
 import { useGetAllNotesQuery } from '@/shared/hooks';
 import { Trigger } from '@/shared/ui';
-
-const actions: React.ReactNode[] = [
-  <EditOutlined key="edit" />,
-  <SettingOutlined key="setting" />,
-  <EllipsisOutlined key="ellipsis" />,
-];
 
 function NotesPage() {
   const { data, isLoading } = useGetAllNotesQuery();
 
-  if (isLoading) {
-    return <Spin />;
-  }
-
   return (
     <Page
       title="Список заметок"
-      renderTopRight={
+      slotHeaderRight={
         <Trigger modal={<CreateNoteModal />}>
           <Button>Создать заметку</Button>
         </Trigger>
       }
+      slotPagination={
+        <Pagination
+          pageSize={data?.pagination.size}
+          current={data?.pagination?.page}
+          total={data?.pagination?.total}
+        />
+      }
     >
-      {data?.data.map(({ title, description }) => (
-        <Card loading={false} actions={actions} style={{ minWidth: 300 }}>
-          <Card.Meta
-            avatar={
-              <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=1" />
-            }
-            title={title}
-            description={
-              <>
-                <p>{description}</p>
-              </>
-            }
-          />
-        </Card>
-      ))}
+      <NotesList notes={data?.data} isLoading={isLoading} />
     </Page>
   );
 }

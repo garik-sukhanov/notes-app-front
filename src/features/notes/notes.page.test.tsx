@@ -16,8 +16,8 @@ vi.mock('@/shared/hooks', () => ({
       data: [
         {
           id: 'd73e7180-2e02-4ab1-8c91-e20ffbc81cdc',
-          name: 'First',
-          address: 'planet Saturn',
+          title: 'First',
+          description: 'planet Saturn',
         },
       ],
     },
@@ -26,9 +26,18 @@ vi.mock('@/shared/hooks', () => ({
 }));
 
 vi.mock('@/shared/components', () => ({
-  Page: ({ title, children }: { title: string; children: React.ReactNode }) => (
+  Page: ({
+    title,
+    children,
+    slotHeaderRight,
+  }: {
+    title: string;
+    children: React.ReactNode;
+    slotHeaderRight?: React.ReactNode;
+  }) => (
     <div>
       <h1>{title}</h1>
+      {slotHeaderRight}
       {children}
     </div>
   ),
@@ -51,6 +60,5 @@ describe('NotesPage', () => {
     // Check for table content (First note)
     expect(screen.getByText('First')).toBeInTheDocument();
     expect(screen.getByText('planet Saturn')).toBeInTheDocument();
-    expect(screen.getByText('Перейти')).toBeInTheDocument();
   });
 });

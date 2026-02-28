@@ -33,10 +33,7 @@ export class ErrorBoundary extends Component<
 
     if (hasError) {
       return (
-        <Space
-          direction="vertical"
-          style={{ backgroundColor: '#fff', height: '100dvh' }}
-        >
+        <Space direction="vertical" style={{ backgroundColor: '#fff' }}>
           <Result
             status="500"
             title="500"

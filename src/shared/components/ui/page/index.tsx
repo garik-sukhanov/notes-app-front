@@ -7,17 +7,26 @@ import { TOKENS } from '@/shared/tokens';
 export interface PageProps {
   children?: ReactNode;
   title?: string;
-  renderTopRight?: ReactNode;
+  slotHeaderRight?: ReactNode;
+  slotPagination?: ReactNode;
 }
 
-export const Page = ({ children, title, renderTopRight }: PageProps) => {
+export const Page = ({
+  children,
+  title,
+  slotHeaderRight,
+  slotPagination,
+}: PageProps) => {
   return (
     <PageWrapper>
       <TopLine>
         <PageTitle>{title}</PageTitle>
-        {renderTopRight}
+        {slotHeaderRight}
       </TopLine>
-      {children}
+      <Content>{children}</Content>
+      {slotPagination && (
+        <PaginationWrapper>{slotPagination}</PaginationWrapper>
+      )}
     </PageWrapper>
   );
 };
@@ -31,9 +40,22 @@ const TopLine = styled.div`
 
 const PageWrapper = styled.div`
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 `;
 
 const PageTitle = styled.h2`
   font-size: 24px;
   font-weight: 600;
+`;
+
+const Content = styled.div`
+  flex: 1;
+`;
+
+const PaginationWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;

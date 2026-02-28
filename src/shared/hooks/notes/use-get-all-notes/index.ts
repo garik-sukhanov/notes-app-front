@@ -1,12 +1,17 @@
-import { useQuery } from '@tanstack/react-query';
+import { type UseQueryResult, useQuery } from '@tanstack/react-query';
 
 import { noteService } from '@/shared/services';
 import type { GetNotesResponseDto } from '@/shared/types/dto';
 
-export const useGetAllNotesQuery = () => {
-  return useQuery<{ data: GetNotesResponseDto }, Error, GetNotesResponseDto>({
+export const useGetAllNotesQuery = (): UseQueryResult<
+  GetNotesResponseDto,
+  Error
+> => {
+  return useQuery<GetNotesResponseDto, Error>({
     queryKey: ['notes'],
-    queryFn: () => noteService.getAll(),
-    select: (data) => data.data,
+    queryFn: async () => {
+      const res = await noteService.getAll();
+      return res.data;
+    },
   });
 };

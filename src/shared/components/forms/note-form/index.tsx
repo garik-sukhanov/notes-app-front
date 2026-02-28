@@ -19,7 +19,7 @@ export const NoteForm = ({ initialData, ...props }: NoteFormProps) => {
       {...props}
     >
       <Form.Item label="Заголовок" name="title">
-        <Input />
+        <Input required />
       </Form.Item>
       <Form.Item label="Подробности" name="description">
         <Input.TextArea rows={6} />
