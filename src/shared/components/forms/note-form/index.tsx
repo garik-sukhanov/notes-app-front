@@ -1,23 +1,12 @@
 import { Button, Form, type FormProps, Input } from 'antd';
 
-import type { NoteType } from '@/shared/types';
+export type NoteFormProps = FormProps;
 
-export type NoteFormProps = FormProps & {
-  initialData?: NoteType;
-};
-
-export const NoteForm = ({ initialData, ...props }: NoteFormProps) => {
+export const NoteForm = (props: NoteFormProps) => {
   const [form] = Form.useForm();
 
   return (
-    <Form
-      layout="vertical"
-      form={form}
-      initialValues={{
-        ...initialData,
-      }}
-      {...props}
-    >
+    <Form layout="vertical" form={form} {...props}>
       <Form.Item label="Заголовок" name="title">
         <Input required />
       </Form.Item>

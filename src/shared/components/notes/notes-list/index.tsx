@@ -7,11 +7,9 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import type { NoteType } from '@/shared/types';
 import { getSkeletonData } from '@/shared/utils/getSkeletonData';
-
-const actions: React.ReactNode[] = [
-  <EditOutlined key="edit" />,
-  <DeleteOutlined key="ellipsis" />,
-];
+import { Trigger } from '@/shared/ui';
+import { UpdateNoteModal } from '@/shared/components';
+import { useDeleteNoteMutation } from '@/shared/hooks/notes/use-delete-note';
 
 interface NotesListProps {
   notes?: NoteType[];
@@ -19,14 +17,14 @@ interface NotesListProps {
 }
 
 export const NotesList = ({ notes, isLoading }: NotesListProps) => {
+  const { mutate: deleteNote } = useDeleteNoteMutation();
+
   const notesList: NoteType[] = useMemo(
     () =>
       notes ??
       getSkeletonData<Omit<NoteType, 'id'>>(8, { title: '', description: '' }),
     [notes],
   );
-
-  console.log('notes :>> ', notes);
 
   if (notes?.length === 0 && !isLoading) {
     return <Empty description={'У вас пока нет заметок'} />;
@@ -35,7 +33,30 @@ export const NotesList = ({ notes, isLoading }: NotesListProps) => {
   return (
     <NotesGrid>
       {notesList.map(({ title, description, id }) => (
-        <NoteCard loading={isLoading} actions={actions} key={id}>
+        <NoteCard
+          loading={isLoading}
+          actions={
+            isLoading
+              ? undefined
+              : [
+                  <Trigger
+                    key={`edit-${id}`}
+                    modal={
+                      <UpdateNoteModal
+                        noteValues={{ id, title, description }}
+                      />
+                    }
+                  >
+                    <EditOutlined />
+                  </Trigger>,
+                  <DeleteOutlined
+                    key={`delete-${id}`}
+                    onClick={() => deleteNote(id)}
+                  />,
+                ]
+          }
+          key={id}
+        >
           <Card.Meta title={title} description={description} />
         </NoteCard>
       ))}

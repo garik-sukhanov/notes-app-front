@@ -6,24 +6,28 @@ import { renderWithRouter } from '@/shared/helpers';
 
 import { Component as NotesPage } from './notes.page';
 
-vi.mock('@/shared/hooks', () => ({
-  useGetAllNotesQuery: vi.fn().mockReturnValue({
-    data: {
-      pagination: {
-        total: 2,
-        page: 1,
-      },
-      data: [
-        {
-          id: 'd73e7180-2e02-4ab1-8c91-e20ffbc81cdc',
-          title: 'First',
-          description: 'planet Saturn',
+vi.mock('@/shared/hooks', async (importOriginal) => {
+  const actual = (await importOriginal()) as Record<string, unknown>;
+  return {
+    ...actual,
+    useGetAllNotesQuery: vi.fn().mockReturnValue({
+      data: {
+        pagination: {
+          total: 2,
+          page: 1,
         },
-      ],
-    },
-    isLoading: false,
-  }),
-}));
+        data: [
+          {
+            id: 'd73e7180-2e02-4ab1-8c91-e20ffbc81cdc',
+            title: 'First',
+            description: 'planet Saturn',
+          },
+        ],
+      },
+      isLoading: false,
+    }),
+  };
+});
 
 vi.mock('@/shared/components', () => ({
   Page: ({
@@ -42,12 +46,19 @@ vi.mock('@/shared/components', () => ({
     </div>
   ),
   CreateNoteModal: () => <div>CreateNoteModal</div>,
+  UpdateNoteModal: () => <div>UpdateNoteModal</div>,
 }));
 
 vi.mock('@/shared/ui', () => ({
   Trigger: ({ children }: { children: React.ReactNode }) => (
     <div>{children}</div>
   ),
+}));
+
+vi.mock('@/shared/hooks/notes/use-delete-note', () => ({
+  useDeleteNoteMutation: vi.fn().mockReturnValue({
+    mutate: vi.fn(),
+  }),
 }));
 
 describe('NotesPage', () => {
