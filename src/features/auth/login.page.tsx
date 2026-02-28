@@ -1,80 +1,79 @@
-import { Card, Flex, Form, type FormProps, Typography } from 'antd';
+import { z } from 'zod';
+
+import { Card, Flex, Form, Typography } from 'antd';
+import { Controller, useForm } from 'react-hook-form';
+
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useLoginMutation } from '@/shared/hooks';
 import { ROUTES } from '@/shared/model/routes';
 import { Button, Input } from '@/shared/ui/kit';
+
+const loginSchema = z.object({
+  email: z.email('Некорректный email'),
+  password: z.string().min(8, 'Не менее 8 символов'),
+});
+
+type LoginForm = z.infer<typeof loginSchema>;
 
 const defaultValues = {
   email: '',
   password: '',
 };
 
-interface LoginFormType {
-  email: string;
-  password: string;
-}
-
 function LoginPage() {
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<LoginForm>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: '', password: '' },
+  });
+
   const { mutate } = useLoginMutation();
 
-  const onFinish: FormProps<LoginFormType>['onFinish'] = async (data) => {
-    const dto = {
-      email: data.email,
-      password: data.password,
-    };
-    mutate(dto);
-  };
-
-  const onFinishFailed: FormProps<LoginFormType>['onFinishFailed'] = (
-    errorInfo,
-  ) => {
-    console.log('Failed:', errorInfo);
-  };
+  const onSubmit = (data: LoginForm) => mutate(data);
 
   return (
     <Card title="Вход в аккаунт" className="w-full max-w-sm">
       <Form
         layout="vertical"
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
+        onFinish={handleSubmit(onSubmit)}
         id="login-form"
         initialValues={defaultValues}
         validateTrigger="onChange"
       >
-        <Form.Item
-          label="Email"
+        <Controller
           name="email"
-          className="grid gap-2"
-          rules={[{ pattern: /\S+@\S+\.\S+/, message: 'Некорректный email' }]}
-        >
-          <Input
-            type="email"
-            size="large"
-            placeholder="m@example.com"
-            required
-          />
-        </Form.Item>
-        <Form.Item
-          label="Пароль"
+          control={control}
+          render={({ field }) => (
+            <Form.Item
+              label="Email"
+              validateStatus={errors.email ? 'error' : ''}
+              help={errors.email?.message}
+            >
+              <Input {...field} size="large" placeholder="m@example.com" />
+            </Form.Item>
+          )}
+        />
+        <Controller
           name="password"
-          className="grid gap-2"
-          rules={[
-            {
-              min: 8,
-              message: 'Пароль должен содержать не менее 8 символов',
-            },
-          ]}
-        >
-          <Input type="password" size="large" required />
-        </Form.Item>
+          control={control}
+          render={({ field }) => (
+            <Form.Item
+              label="Пароль"
+              validateStatus={errors.password ? 'error' : ''}
+              help={errors.password?.message}
+            >
+              <Input type={'password'} {...field} size="large" />
+            </Form.Item>
+          )}
+        />
         <Card
           size="small"
           extra={
-            <Button
-              type="link"
-              href="#"
-              className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-            >
+            <Button type="link" href="#">
               Забыли пароль?
             </Button>
           }
@@ -83,25 +82,17 @@ function LoginPage() {
             <Button
               htmlType="submit"
               variant="filled"
-              className="w-full"
               form="login-form"
               type="primary"
               size="large"
             >
               Войти
             </Button>
-            <Button disabled className="w-full">
-              Войти через Google
-            </Button>
           </Flex>
         </Card>
         <Typography>
-          Если нет аккаунта, вы можете{' '}
-          <Button
-            type="link"
-            href={ROUTES.REGISTER}
-            className="underline-offset-4 underline "
-          >
+          Если нет аккаунта, вы можете
+          <Button type="link" href={ROUTES.REGISTER}>
             зарегистрироваться
           </Button>
         </Typography>
