@@ -19,6 +19,7 @@ const SwitchWrapper = styled.div<{ $checked: boolean }>`
   align-items: center;
   padding: 0 4px;
   user-select: none;
+  border: 1px solid ${({ theme }) => theme.colors.bgBase};
 `;
 
 const SwitchHandle = styled.div<{ $checked: boolean }>`

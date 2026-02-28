@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 
-import { Menu } from '@/shared/components/ui';
+import { Menu, Typography } from '@/shared/components/ui';
 import { ROUTES } from '@/shared/model/routes';
 
 import { ChangeThemeButton, LogoutButton } from '../buttons';
@@ -29,7 +29,7 @@ export const BusinessMenu = ({ isMobile }: { isMobile?: boolean }) => {
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span>Тема:</span>
+            <Typography>Тема:</Typography>
             <ChangeThemeButton />
           </div>
           <LogoutButton $variant="secondary" $fullWidth />
