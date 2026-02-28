@@ -65,7 +65,7 @@ const commonTokens = {
 export const lightTokens = {
   ...commonTokens,
   colors: {
-    bgBase: palette.green.light,
+    bgBase: palette.grey[300],
     textBase: palette.dark.base,
     primary: palette.purple.dark,
     bgContainer: palette.grey[100],
@@ -77,7 +77,7 @@ export const darkTokens = {
   ...commonTokens,
   colors: {
     bgBase: palette.dark.base,
-    textBase: palette.green.light,
+    textBase: palette.grey[100],
     primary: palette.purple.light,
     bgContainer: palette.dark.container,
     main: palette.purple.light,
