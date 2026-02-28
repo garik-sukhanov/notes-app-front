@@ -78,6 +78,7 @@ const NotesGrid = styled.div`
 
 const NoteCard = styled(Card)`
   min-width: 300px;
+  max-width: 600px;
   width: 100%;
   height: fit-content;
   .ant-card-body {
