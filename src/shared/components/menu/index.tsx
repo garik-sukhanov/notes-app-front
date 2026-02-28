@@ -41,11 +41,11 @@ export const Menu = () => {
 
   return (
     <MenuList>
-      <MenuItem to={ROUTES.USERS} $active={location.pathname === ROUTES.USERS}>
-        Пользователи
-      </MenuItem>
       <MenuItem to={ROUTES.NOTES} $active={location.pathname === ROUTES.NOTES}>
         Заметки
+      </MenuItem>
+      <MenuItem to={ROUTES.USERS} $active={location.pathname === ROUTES.USERS}>
+        Пользователи
       </MenuItem>
     </MenuList>
   );
