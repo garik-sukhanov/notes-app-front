@@ -33,7 +33,8 @@ function RegisterPage() {
       </Flex>
       <RegisterForm onFinish={onSubmit} id="register-form" />
       <Typography $variant="body">
-        Уже зарегистрированы? <Link to={ROUTES.LOGIN}>Войдите в аккаунт</Link>
+        Уже зарегистрированы?{' '}
+        <Link to={ROUTES.LOGIN}>Войдите&nbsp;в&nbsp;аккаунт</Link>
       </Typography>
     </Card>
   );
