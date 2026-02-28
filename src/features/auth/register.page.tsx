@@ -1,12 +1,10 @@
-import { Card, Flex, Typography } from 'antd';
-
 import {
   RegisterForm,
   type RegisterFormValues,
 } from '@/shared/components/forms';
 import { useRegisterMutation } from '@/shared/hooks';
 import { ROUTES } from '@/shared/model/routes';
-import { Button } from '@/shared/ui/kit';
+import { Card, CardTitle, Typography, Link } from '@/shared/components/ui';
 
 function RegisterPage() {
   const { mutate } = useRegisterMutation();
@@ -21,16 +19,15 @@ function RegisterPage() {
   };
 
   return (
-    <Card title="Регистрация">
-      <Flex vertical gap={20}>
-        <RegisterForm onFinish={onSubmit} id="register-form" />
-        <Typography>
-          Уже зарегистрированы?
-          <Button type="link" href={ROUTES.LOGIN}>
-            Войдите в аккаунт
-          </Button>
-        </Typography>
-      </Flex>
+    <Card>
+      <CardTitle>Регистрация</CardTitle>
+      <RegisterForm onFinish={onSubmit} id="register-form" />
+      <Typography $variant="body">
+        Уже зарегистрированы?{' '}
+        <Link to={ROUTES.LOGIN}>
+          Войдите в аккаунт
+        </Link>
+      </Typography>
     </Card>
   );
 }

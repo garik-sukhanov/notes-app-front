@@ -1,15 +1,19 @@
 import { z } from 'zod';
-
-import { Form, type FormProps } from 'antd';
+import styled from 'styled-components';
 import { Controller, useForm } from 'react-hook-form';
-
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Button, Input } from '@/shared/ui/kit';
+import { Button, Input, InputWrapper, Label, ErrorText } from '@/shared/components/ui';
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing[4]};
+`;
 
 const registerSchema = z
   .object({
-    email: z.email('Некорректный email'),
+    email: z.string().email('Некорректный email'),
     username: z.string().min(3, 'Минимум 3 символа'),
     password: z.string().min(8, 'Не менее 8 символов'),
     confirmPassword: z.string().min(1, 'Пожалуйста, подтвердите пароль!'),
@@ -21,11 +25,12 @@ const registerSchema = z
 
 export type RegisterFormValues = z.infer<typeof registerSchema>;
 
-export type RegisterFormProps = Omit<FormProps, 'onFinish'> & {
+export interface RegisterFormProps {
   onFinish?: (values: RegisterFormValues) => void;
-};
+  id?: string;
+}
 
-export const RegisterForm = ({ onFinish, ...props }: RegisterFormProps) => {
+export const RegisterForm = ({ onFinish, id }: RegisterFormProps) => {
   const {
     handleSubmit,
     control,
@@ -44,76 +49,80 @@ export const RegisterForm = ({ onFinish, ...props }: RegisterFormProps) => {
     onFinish?.(data);
   };
 
-  const handleFormFinish: FormProps['onFinish'] = () => {
-    void handleSubmit(onSubmit)();
-  };
-
   return (
-    <Form
-      layout="vertical"
-      onFinish={handleFormFinish}
-      autoComplete="off"
-      validateTrigger="onChange"
-      {...props}
-    >
+    <Form id={id} onSubmit={handleSubmit(onSubmit)} autoComplete="off">
       <Controller
         name="email"
         control={control}
         render={({ field }) => (
-          <Form.Item
-            label="Email"
-            validateStatus={errors.email ? 'error' : ''}
-            help={errors.email?.message}
-          >
-            <Input
-              {...field}
-              size="large"
+          <InputWrapper>
+            <Label>Email</Label>
+            <Input 
+              {...field} 
               type="email"
-              placeholder="m@example.com"
+              $error={!!errors.email} 
+              $fullWidth 
+              placeholder="m@example.com" 
             />
-          </Form.Item>
+            {errors.email && <ErrorText>{errors.email.message}</ErrorText>}
+          </InputWrapper>
         )}
       />
       <Controller
         name="username"
         control={control}
         render={({ field }) => (
-          <Form.Item
-            label="Username"
-            validateStatus={errors.username ? 'error' : ''}
-            help={errors.username?.message}
-          >
-            <Input {...field} size="large" type="text" placeholder="John Dow" />
-          </Form.Item>
+          <InputWrapper>
+            <Label>Username</Label>
+            <Input 
+              {...field} 
+              type="text"
+              $error={!!errors.username} 
+              $fullWidth 
+              placeholder="John Dow" 
+            />
+            {errors.username && <ErrorText>{errors.username.message}</ErrorText>}
+          </InputWrapper>
         )}
       />
       <Controller
         name="password"
         control={control}
         render={({ field }) => (
-          <Form.Item
-            label="Пароль"
-            validateStatus={errors.password ? 'error' : ''}
-            help={errors.password?.message}
-          >
-            <Input {...field} size="large" type="password" />
-          </Form.Item>
+          <InputWrapper>
+            <Label>Пароль</Label>
+            <Input 
+              {...field} 
+              type="password"
+              $error={!!errors.password} 
+              $fullWidth 
+            />
+            {errors.password && <ErrorText>{errors.password.message}</ErrorText>}
+          </InputWrapper>
         )}
       />
       <Controller
         name="confirmPassword"
         control={control}
         render={({ field }) => (
-          <Form.Item
-            label="Подтвердите пароль"
-            validateStatus={errors.confirmPassword ? 'error' : ''}
-            help={errors.confirmPassword?.message}
-          >
-            <Input {...field} size="large" type="password" />
-          </Form.Item>
+          <InputWrapper>
+            <Label>Подтвердите пароль</Label>
+            <Input 
+              {...field} 
+              type="password"
+              $error={!!errors.confirmPassword} 
+              $fullWidth 
+            />
+            {errors.confirmPassword && <ErrorText>{errors.confirmPassword.message}</ErrorText>}
+          </InputWrapper>
         )}
       />
-      <Button type="primary" size="large" htmlType="submit" block>
+      <Button
+        type="submit"
+        $variant="primary"
+        $size="large"
+        $fullWidth
+      >
         Зарегистрироваться
       </Button>
     </Form>

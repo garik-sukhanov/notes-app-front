@@ -1,14 +1,9 @@
 import styled from 'styled-components';
-
-import { Layout } from 'antd';
 import { type ReactNode } from 'react';
-
 import { useIsFetching } from '@tanstack/react-query';
 
 import { Header } from '../header';
 import { LoadLine } from '../ui';
-
-const { Content } = Layout;
 
 export const AppLayout = ({ children }: { children: ReactNode }) => {
   const isFetching = useIsFetching();
@@ -22,14 +17,15 @@ export const AppLayout = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const OutsideLayout = styled(Layout)`
+const OutsideLayout = styled.div`
   min-height: 100dvh;
   position: relative;
   display: flex;
   flex-direction: column;
+  background-color: ${({ theme }) => theme.colors.bgBase};
 `;
 
-const StyledContent = styled(Content)`
+const StyledContent = styled.main`
   padding: 16px;
   display: flex;
   flex-direction: column;

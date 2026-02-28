@@ -1,9 +1,8 @@
-import type { ModalProps } from 'antd';
-import { type ReactElement, useState } from 'react';
+import { type ReactElement, cloneElement, useState } from 'react';
 
 export type TriggerProps = {
-  children: ReactElement;
-  modal: ReactElement<ModalProps>;
+  children: ReactElement<{ onClick?: () => void }>;
+  modal: ReactElement<{ open?: boolean; onCancel?: () => void }>;
 };
 
 export const Trigger = ({ children, modal }: TriggerProps) => {
@@ -13,18 +12,18 @@ export const Trigger = ({ children, modal }: TriggerProps) => {
     setActive((prev) => !prev);
   };
 
+  const closeActive = () => {
+    setActive(false);
+  };
+
   return (
     <>
-      <children.type onClick={toggleActive} {...(children.props as object)} />
-      {isActive ? (
-        <modal.type
-          {...modal.props}
-          open={isActive}
-          onCancel={() => {
-            setActive(false);
-          }}
-        />
-      ) : null}
+      {cloneElement(children, { onClick: toggleActive })}
+      {isActive &&
+        cloneElement(modal, {
+          open: isActive,
+          onCancel: closeActive,
+        })}
     </>
   );
 };

@@ -1,24 +1,29 @@
 import { z } from 'zod';
-
-import { Form, type FormProps } from 'antd';
+import styled from 'styled-components';
 import { Controller, useForm } from 'react-hook-form';
-
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Button, Input } from '@/shared/ui/kit';
+import { Button, Input, InputWrapper, Label, ErrorText } from '@/shared/components/ui';
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing[4]};
+`;
 
 const loginSchema = z.object({
-  email: z.email('Некорректный email'),
+  email: z.string().email('Некорректный email'),
   password: z.string().min(8, 'Не менее 8 символов'),
 });
 
 export type LoginFormValues = z.infer<typeof loginSchema>;
 
-export type LoginFormProps = Omit<FormProps, 'onFinish'> & {
+export interface LoginFormProps {
   onFinish?: (values: LoginFormValues) => void;
-};
+  id?: string;
+}
 
-export const LoginForm = ({ onFinish, ...props }: LoginFormProps) => {
+export const LoginForm = ({ onFinish, id }: LoginFormProps) => {
   const {
     handleSubmit,
     control,
@@ -32,49 +37,45 @@ export const LoginForm = ({ onFinish, ...props }: LoginFormProps) => {
     onFinish?.(data);
   };
 
-  const handleFormFinish: FormProps['onFinish'] = () => {
-    void handleSubmit(onSubmit)();
-  };
-
   return (
-    <Form
-      layout="vertical"
-      onFinish={handleFormFinish}
-      validateTrigger="onChange"
-      {...props}
-    >
+    <Form id={id} onSubmit={handleSubmit(onSubmit)}>
       <Controller
         name="email"
         control={control}
         render={({ field }) => (
-          <Form.Item
-            label="Email"
-            validateStatus={errors.email ? 'error' : ''}
-            help={errors.email?.message}
-          >
-            <Input {...field} size="large" placeholder="m@example.com" />
-          </Form.Item>
+          <InputWrapper>
+            <Label>Email</Label>
+            <Input 
+              {...field} 
+              $error={!!errors.email} 
+              $fullWidth 
+              placeholder="m@example.com" 
+            />
+            {errors.email && <ErrorText>{errors.email.message}</ErrorText>}
+          </InputWrapper>
         )}
       />
       <Controller
         name="password"
         control={control}
         render={({ field }) => (
-          <Form.Item
-            label="Пароль"
-            validateStatus={errors.password ? 'error' : ''}
-            help={errors.password?.message}
-          >
-            <Input type={'password'} {...field} size="large" />
-          </Form.Item>
+          <InputWrapper>
+            <Label>Пароль</Label>
+            <Input 
+              {...field} 
+              type="password" 
+              $error={!!errors.password} 
+              $fullWidth 
+            />
+            {errors.password && <ErrorText>{errors.password.message}</ErrorText>}
+          </InputWrapper>
         )}
       />
       <Button
-        htmlType="submit"
-        variant="filled"
-        type="primary"
-        size="large"
-        block
+        type="submit"
+        $variant="primary"
+        $size="large"
+        $fullWidth
       >
         Войти
       </Button>

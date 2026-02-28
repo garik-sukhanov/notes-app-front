@@ -1,37 +1,34 @@
-import { Table, Tag } from 'antd';
-import type { TableProps } from 'antd/es/table';
-
-import { Page } from '@/shared/components';
+import { Page, Table, Tag } from '@/shared/components/ui';
 import { useGetUsersQuery } from '@/shared/hooks';
 import type { UserType } from '@/shared/types';
 
-const columns: TableProps<UserType>['columns'] = [
+const columns = [
   {
     title: 'Email',
-    dataIndex: 'email',
+    dataIndex: 'email' as const,
     key: 'email',
-    width: 100,
   },
   {
     title: 'Username',
-    dataIndex: 'username',
+    dataIndex: 'username' as const,
     key: 'username',
-    width: 100,
   },
   {
-    title: 'roles',
-    dataIndex: 'roles',
+    title: 'Roles',
     key: 'roles',
-    width: 100,
-    render: (_, { roles }) => (
+    render: (_: unknown, { roles }: UserType) => (
       <>
         {roles.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
+          let color: 'success' | 'warning' | 'error' | 'info' = 'info';
           if (tag === 'loser') {
-            color = 'volcano';
+            color = 'error';
+          } else if (tag.length > 5) {
+            color = 'warning';
+          } else {
+            color = 'success';
           }
           return (
-            <Tag color={color} key={tag}>
+            <Tag $color={color} key={tag}>
               {tag.toUpperCase()}
             </Tag>
           );
@@ -51,11 +48,6 @@ function UsersPage() {
         columns={columns}
         loading={isLoading}
         rowKey={(record) => record.id}
-        pagination={{
-          total: data?.pagination.total,
-          current: data?.pagination.page,
-          pageSize: data?.pagination.size,
-        }}
       />
     </Page>
   );

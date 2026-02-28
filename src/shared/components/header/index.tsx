@@ -8,7 +8,7 @@ export const Header = () => {
   return (
     <HeaderWrapper>
       <Logo compact />
-      <Menu mode="horizontal" style={{ borderBlockEnd: 'none' }} />
+      <Menu />
       <ChangeThemeButton />
       <LogoutButton />
     </HeaderWrapper>
@@ -23,5 +23,5 @@ const HeaderWrapper = styled.div`
   grid-template-columns: 2em 1fr 4em 5em;
   align-items: center;
   gap: 10px;
-  padding: 0 16px;
+  padding: 8px 16px;
 `;

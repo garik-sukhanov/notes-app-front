@@ -1,9 +1,14 @@
 import { z } from 'zod';
-
-import { Button, Form, type FormProps, Input } from 'antd';
+import styled from 'styled-components';
 import { Controller, useForm } from 'react-hook-form';
-
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Input, InputWrapper, Label, ErrorText, TextArea } from '@/shared/components/ui';
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing[4]};
+`;
 
 const noteSchema = z.object({
   title: z.string().min(1, 'Введите заголовок'),
@@ -12,15 +17,16 @@ const noteSchema = z.object({
 
 type NoteFormType = z.infer<typeof noteSchema>;
 
-export type NoteFormProps = Omit<FormProps, 'onFinish' | 'initialValues'> & {
+export interface NoteFormProps {
   onFinish?: (values: NoteFormType) => void;
   initialValues?: Partial<NoteFormType>;
-};
+  id?: string;
+}
 
 export const NoteForm = ({
   onFinish,
   initialValues,
-  ...props
+  id,
 }: NoteFormProps) => {
   const {
     handleSubmit,
@@ -38,47 +44,42 @@ export const NoteForm = ({
     onFinish?.(data);
   };
 
-  const handleFormFinish: FormProps['onFinish'] = handleSubmit(onSubmit);
-
   return (
-    <Form
-      layout="vertical"
-      onFinish={handleFormFinish}
-      validateTrigger="onChange"
-      {...props}
-    >
+    <Form id={id} onSubmit={handleSubmit(onSubmit)}>
       <Controller
         name="title"
         control={control}
         render={({ field }) => (
-          <Form.Item
-            label="Заголовок"
-            validateStatus={errors.title ? 'error' : ''}
-            help={errors.title?.message}
-            required
-          >
-            <Input {...field} />
-          </Form.Item>
+          <InputWrapper>
+            <Label>Заголовок</Label>
+            <Input 
+              {...field} 
+              $error={!!errors.title} 
+              $fullWidth 
+            />
+            {errors.title && <ErrorText>{errors.title.message}</ErrorText>}
+          </InputWrapper>
         )}
       />
       <Controller
         name="description"
         control={control}
         render={({ field }) => (
-          <Form.Item
-            label="Подробности"
-            validateStatus={errors.description ? 'error' : ''}
-            help={errors.description?.message}
-          >
-            <Input.TextArea {...field} rows={6} />
-          </Form.Item>
+          <InputWrapper>
+            <Label>Подробности</Label>
+            <TextArea 
+              {...field} 
+              $error={!!errors.description} 
+              $fullWidth 
+              rows={6}
+            />
+            {errors.description && <ErrorText>{errors.description.message}</ErrorText>}
+          </InputWrapper>
         )}
       />
-      <Form.Item label={null}>
-        <Button type="primary" htmlType="submit">
-          Сохранить
-        </Button>
-      </Form.Item>
+      <Button type="submit" $variant="primary">
+        Сохранить
+      </Button>
     </Form>
   );
 };

@@ -1,46 +1,52 @@
-import { Menu as AntMenu, type MenuProps as AntMenuProps } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
-import { BorderOuterOutlined, UserOutlined } from '@ant-design/icons';
+import { useLocation } from 'react-router-dom';
 
+import { Link } from '@/shared/components/ui';
 import { ROUTES } from '@/shared/model/routes';
 
-export type MenuProps = AntMenuProps;
+const MenuList = styled.nav`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing[4]};
+  align-items: center;
+`;
 
-export const Menu = ({ mode = 'inline', style, ...props }: MenuProps) => {
-  const { onClick } = props;
-  const navigate = useNavigate();
+const MenuItem = styled(Link)<{ $active?: boolean }>`
+  font-weight: ${({ $active }) => ($active ? '700' : '500')};
+  color: ${({ theme, $active }) =>
+    $active ? theme.colors.primary : theme.colors.textBase};
+  position: relative;
+  padding: ${({ theme }) => theme.spacing[2]} 0;
+  text-decoration: none !important;
 
-  const handleClick: MenuProps['onClick'] = (e) => {
-    const { key } = e;
-    navigate(key);
-    if (onClick) {
-      onClick(e);
-    }
-  };
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: ${({ theme }) => theme.colors.primary};
+    transform: scaleX(${({ $active }) => ($active ? 1 : 0)});
+    transition: transform 0.2s ease-in-out;
+  }
+
+  &:hover::after {
+    transform: scaleX(1);
+  }
+`;
+
+export const Menu = () => {
+  const location = useLocation();
 
   return (
-    <AntMenu
-      onClick={handleClick}
-      mode={mode}
-      defaultSelectedKeys={[window.location.pathname]}
-      style={{
-        backgroundColor: 'transparent',
-        ...style,
-      }}
-      {...props}
-      items={[
-        {
-          key: ROUTES.USERS,
-          icon: <UserOutlined />,
-          label: 'Пользователи',
-        },
-        {
-          key: ROUTES.NOTES,
-          icon: <BorderOuterOutlined />,
-          label: 'Заметки',
-        },
-      ]}
-    />
+    <MenuList>
+      <MenuItem to={ROUTES.USERS} $active={location.pathname === ROUTES.USERS}>
+        Пользователи
+      </MenuItem>
+      <MenuItem to={ROUTES.NOTES} $active={location.pathname === ROUTES.NOTES}>
+        Заметки
+      </MenuItem>
+    </MenuList>
   );
 };

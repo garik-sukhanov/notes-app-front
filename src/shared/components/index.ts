@@ -5,7 +5,7 @@ export { Page, type PageProps, LoadLine } from './ui';
 
 export { AuthLayout } from './auth-layout';
 export { AppLayout } from './app-layout';
-export { Menu, type MenuProps } from './menu';
+export { Menu } from './menu';
 export { RouteFallback } from './route-fallback';
 export { Header } from './header';
 export { Logo } from './logo';

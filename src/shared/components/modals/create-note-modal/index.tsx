@@ -1,27 +1,31 @@
-import { Modal, type ModalProps } from 'antd';
-import type { MouseEvent } from 'react';
-
+import { Modal } from '@/shared/components/ui';
 import { useCreateNoteMutation } from '@/shared/hooks';
 import type { NoteType } from '@/shared/types';
 
 import { NoteForm } from '../../forms';
 
-export type CreateNoteModalProps = ModalProps;
+export interface CreateNoteModalProps {
+  open?: boolean;
+  onCancel?: () => void;
+}
 
-export const CreateNoteModal = (props: CreateNoteModalProps) => {
+export const CreateNoteModal = ({ open, onCancel }: CreateNoteModalProps) => {
   const { mutate } = useCreateNoteMutation();
 
-  const onFinish = (values: NoteType) =>
-    mutate(values, {
+  const onFinish = (values: { title: string; description?: string }) =>
+    mutate(values as NoteType, {
       onSuccess: () => {
-        props.onCancel?.(
-          new MouseEvent('click') as unknown as MouseEvent<HTMLButtonElement>,
-        );
+        onCancel?.();
       },
     });
 
   return (
-    <Modal title="Создать заметку" footer={null} {...props}>
+    <Modal
+      title="Создать заметку"
+      open={open}
+      onCancel={onCancel}
+      footer={null}
+    >
       <NoteForm onFinish={onFinish} />
     </Modal>
   );
